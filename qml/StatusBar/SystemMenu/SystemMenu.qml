@@ -234,11 +234,32 @@ Item {
                 BluetoothElement {
                     id: bluetooth
                     objectName: "bluetoothMenu"
-                    visible: false
+                    visible: true
                     ident:         headerIdent;
                     internalIdent: subItemIdent;
                     active: !airplaneModeInProgress;
                     maxViewHeight : maxHeight - clipRect.anchors.topMargin - clipRect.anchors.bottomMargin;
+
+                    onMenuCloseRequest: {
+                        closeMenuTimer.interval = delayMs;
+                        closeMenuTimer.start();
+                    }
+
+                    onPrefsTriggered: {
+                        launcherInstance.launchApplication("org.webosports.app.settings",{"page":"BlueTooth"});
+                    }
+
+                    onItemSelected: {
+                        var target = {};
+                        //target["ssid"] = name;
+                        //target["securityType"] = securityType;
+                        //target["connectState"] = connState;
+                        //if (securityType.length <= 0) {
+                        //    wifi.joinWifi(name);
+                        //} else {
+                            launcherInstance.launchApplication("org.webosports.app.settings",{"target":target});
+                        }
+                    }
 
                     onMenuCloseRequest: {
                         closeMenuTimer.interval = delayMs;
